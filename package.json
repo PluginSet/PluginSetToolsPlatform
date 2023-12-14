@@ -1,0 +1,17 @@
+{
+  "name": "com.pluginset.tools.platform",
+  "displayName": "PluginSet Tools: Platform Tools",
+  "version": "1.0.0",
+  "unity": "2018.4",
+  "description": "Platform build tools in pluginset.",
+  "keywords": [
+    "pluginset",
+    "buildapp"
+  ],
+  "dependencies": {
+  },
+  "author": {
+    "name": "LyneXiao",
+    "email": "lixonxs@icloud.com"
+  }
+}
