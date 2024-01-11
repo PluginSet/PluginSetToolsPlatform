@@ -1,5 +1,5 @@
 {
-    "name": "PluginSet.Platform.Editor",
+    "name": "PluginSet.Tools.Platform.Editor",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [
