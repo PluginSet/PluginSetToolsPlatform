@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -69,7 +70,25 @@ namespace PluginSet.Platform.Editor
             File.Copy(appIconPath, Path.Combine(output, "app.png"), true);
 #endif
         }
-        
+
+        private static string GetEditorGradleVersion()
+        {
+
+            var path = Path.Combine(EditorApplication.applicationContentsPath, "PlaybackEngines", "AndroidPlayer",
+                "Tools", "gradle", "lib");
+            foreach (var file in Directory.GetFiles(path, "gradle-*.jar"))
+            {
+                var fileName = Path.GetFileNameWithoutExtension(file);
+                var match = Regex.Match(fileName, "gradle(-\\w+)+-([0-9]+\\.[0-9]+(\\.[0-9]+)?)");
+                if (match.Groups.Count >= 3)
+                {
+                    return match.Groups[2].Value;
+                }
+            }
+
+            return null;
+        }
+
         public static void CopyGradleFiles(string targetPath)
         {
 			var corePath = GetPackageFullPath("com.pluginset.tools.platform");
@@ -85,6 +104,9 @@ namespace PluginSet.Platform.Editor
 #else
 			var gradleVersion = "gradle-5.6.4-bin";
 #endif
+            var editorGradleVersion = GetEditorGradleVersion();
+            if (!string.IsNullOrEmpty(editorGradleVersion))
+                gradleVersion = $"gradle-{editorGradleVersion}-bin";
 			var propertiesFile = Path.Combine(srcPath, "gradle-wrapper.properties");
 			var properties = File.ReadAllLines(propertiesFile);
 			properties[properties.Length - 1] = $"distributionUrl=https\\://services.gradle.org/distributions/{gradleVersion}.zip";
